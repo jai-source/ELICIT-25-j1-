@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media (max-width: 640px) {
+  /* Shrink the countdown timer */
+  .mobile-timer {
+    padding: 0.5rem !important;
+    font-size: 0.75rem !important;
+    border-width: 1px !important;
+    max-width: 180px;
+    margin: 0 auto;
+  }
+  /* Move main heading down */
+  .mobile-main-heading {
+    margin-top: 3.5rem !important;
+    font-size: 1.25rem !important;
+  }
+  /* Hide nav grid, show hamburger */
+  .nav-grid {
+    display: none !important;
+  }
+  .hamburger-menu {
+    display: flex !important;
+    justify-content: flex-end;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 50;
+  }
+}

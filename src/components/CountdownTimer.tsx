@@ -38,7 +38,7 @@ const CountdownTimer: React.FC = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.8 }}
-      className="bg-black bg-opacity-70 border border-cyan-400 p-4 font-mono"
+      className="bg-black bg-opacity-70 border border-cyan-400 p-4 font-mono mobile-timer"
       style={{
         clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))',
         boxShadow: '0 0 20px rgba(0, 255, 65, 0.4), 0 0 40px rgba(255, 0, 64, 0.2)',

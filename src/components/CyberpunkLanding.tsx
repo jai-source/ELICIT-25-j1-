@@ -16,6 +16,7 @@ const CyberpunkLanding: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -112,7 +113,7 @@ const CyberpunkLanding: React.FC = () => {
                 >
                   <GlitchText 
                     text="SYSTEM CORRUPTION DETECTED"
-                    className="text-2xl md:text-4xl lg:text-5xl font-mono font-bold text-[#00ff41] mb-16"
+                    className="text-2xl md:text-4xl lg:text-5xl font-mono font-bold text-[#00ff41] mb-16 mobile-main-heading"
                     style={{
                       textShadow: `
                         -1px -1px 0 #000,
@@ -176,95 +177,168 @@ const CyberpunkLanding: React.FC = () => {
         </div>
 
         {/* Unified Navigation Row */}
-        <AnimatePresence>
-          {isInitialized && (
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.5, duration: 0.8 }}
-              className="absolute top-[65%] right-[21%] transform -translate-x-1/2 -translate-y-1/2 flex gap-12"
-            >
-              {[
-                { icon: Calendar, label: 'EVENTS', color: 'border-cyan-400 text-cyan-400', glowColor: '#00ffff' },
-                { icon: Users, label: 'SPEAKERS', color: 'border-lime-400 text-lime-400', glowColor: '#00ff41' },
-                { icon: Info, label: 'ABOUT', color: 'border-purple-400 text-purple-400', glowColor: '#8b5cf6' },
-                { icon: Phone, label: 'CONTACT', color: 'border-yellow-400 text-yellow-400', glowColor: '#fbbf24' },
-                { icon: Zap, label: 'SPONSORS', color: 'border-pink-400 text-pink-400', glowColor: '#f472b6' },
-                { icon: Monitor, label: 'REGISTER', color: 'border-red-400 text-red-400', glowColor: '#ff0040' },
-              ].map((item, index) => (
-                <motion.button
-                  key={item.label}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 2.8 + index * 0.1 }}
-                  whileHover={{
-                    scale: 1.1,
-                    boxShadow: `0 0 25px ${item.glowColor}, inset 0 0 15px rgba(255,255,255,0.1)`
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => playSound('/audio/click.mp3')}
-                  className={`group relative w-32 h-32 ${item.color} bg-black bg-opacity-80 hover:bg-opacity-90 transition-all duration-300 font-mono text-xs tracking-wider overflow-hidden`}
-                  style={{
-                    clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
-                    boxShadow: `0 0 10px ${item.glowColor}40`,
-                  }}
-                >
-                  {/* Decorative effects remain unchanged */}
-                  <div className="absolute inset-0 opacity-30">
-                    {[...Array(3)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="absolute w-full h-px bg-current"
-                        style={{ top: `${20 + i * 20}%` }}
-                        animate={{ scaleX: [0, 1, 0], opacity: [0, 1, 0] }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          delay: index * 0.3 + i * 0.2,
-                          ease: "easeInOut",
-                        }}
-                      />
-                    ))}
-                  </div>
+        {/* Desktop nav grid */}
+        <div className="nav-grid">
+          <AnimatePresence>
+            {isInitialized && (
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 2.5, duration: 0.8 }}
+                className="absolute top-[65%] right-[21%] transform -translate-x-1/2 -translate-y-1/2 flex gap-12"
+              >
+                {[
+                  { icon: Calendar, label: 'EVENTS', color: 'border-cyan-400 text-cyan-400', glowColor: '#00ffff' },
+                  { icon: Users, label: 'SPEAKERS', color: 'border-lime-400 text-lime-400', glowColor: '#00ff41' },
+                  { icon: Info, label: 'ABOUT', color: 'border-purple-400 text-purple-400', glowColor: '#8b5cf6' },
+                  { icon: Phone, label: 'CONTACT', color: 'border-yellow-400 text-yellow-400', glowColor: '#fbbf24' },
+                  { icon: Zap, label: 'SPONSORS', color: 'border-pink-400 text-pink-400', glowColor: '#f472b6' },
+                  { icon: Monitor, label: 'REGISTER', color: 'border-red-400 text-red-400', glowColor: '#ff0040' },
+                ].map((item, index) => (
+                  <motion.button
+                    key={item.label}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 2.8 + index * 0.1 }}
+                    whileHover={{
+                      scale: 1.1,
+                      boxShadow: `0 0 25px ${item.glowColor}, inset 0 0 15px rgba(255,255,255,0.1)`
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => playSound('/audio/click.mp3')}
+                    className={`group relative w-32 h-32 ${item.color} bg-black bg-opacity-80 hover:bg-opacity-90 transition-all duration-300 font-mono text-xs tracking-wider overflow-hidden`}
+                    style={{
+                      clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
+                      boxShadow: `0 0 10px ${item.glowColor}40`,
+                    }}
+                  >
+                    {/* Decorative effects remain unchanged */}
+                    <div className="absolute inset-0 opacity-30">
+                      {[...Array(3)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          className="absolute w-full h-px bg-current"
+                          style={{ top: `${20 + i * 20}%` }}
+                          animate={{ scaleX: [0, 1, 0], opacity: [0, 1, 0] }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            delay: index * 0.3 + i * 0.2,
+                            ease: "easeInOut",
+                          }}
+                        />
+                      ))}
+                    </div>
 
-                  <div className="relative z-10 flex flex-col items-center justify-center h-full space-y-1">
+                    <div className="relative z-10 flex flex-col items-center justify-center h-full space-y-1">
+                      <motion.div
+                        whileHover={{ rotate: 180, scale: 1.2 }}
+                        transition={{ duration: 0.3 }}
+                        className="relative"
+                      >
+                        <item.icon className="w-6 h-6" />
+                        <motion.div
+                          className="absolute inset-0"
+                          animate={{
+                            boxShadow: [
+                              `0 0 5px ${item.glowColor}`,
+                              `0 0 15px ${item.glowColor}, 0 0 25px ${item.glowColor}`,
+                              `0 0 5px ${item.glowColor}`
+                            ]
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                      </motion.div>
+                      <span className="text-[10px] leading-tight text-center">{item.label}</span>
+                    </div>
+
+                    {/* Glitch / scan effects */}
                     <motion.div
-                      whileHover={{ rotate: 180, scale: 1.2 }}
-                      transition={{ duration: 0.3 }}
-                      className="relative"
-                    >
-                      <item.icon className="w-6 h-6" />
-                      <motion.div
-                        className="absolute inset-0"
-                        animate={{
-                          boxShadow: [
-                            `0 0 5px ${item.glowColor}`,
-                            `0 0 15px ${item.glowColor}, 0 0 25px ${item.glowColor}`,
-                            `0 0 5px ${item.glowColor}`
-                          ]
-                        }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      />
-                    </motion.div>
-                    <span className="text-[10px] leading-tight text-center">{item.label}</span>
-                  </div>
+                      className="absolute inset-0 bg-current opacity-0 group-hover:opacity-10"
+                      animate={{ opacity: [0, 0.1, 0], scaleY: [1, 1.1, 1] }}
+                      transition={{ duration: 0.2, repeat: Infinity, repeatDelay: 3 }}
+                    />
+                    <motion.div
+                      className="absolute left-0 w-full h-px bg-current opacity-0 group-hover:opacity-60"
+                      animate={{ y: [0, 64, 0], opacity: [0, 0.6, 0] }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    />
+                  </motion.button>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        {/* Hamburger menu for mobile */}
+        <div className="hamburger-menu" style={{ display: 'none' }}>
+          <button
+            aria-label="Open navigation menu"
+            style={{ background: 'none', border: 'none', padding: 0, margin: 0 }}
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect y="8" width="36" height="4" rx="2" fill="#00ffff"/>
+              <rect y="16" width="36" height="4" rx="2" fill="#00ffff"/>
+              <rect y="24" width="36" height="4" rx="2" fill="#00ffff"/>
+            </svg>
+          </button>
+        </div>
 
-                  {/* Glitch / scan effects */}
-                  <motion.div
-                    className="absolute inset-0 bg-current opacity-0 group-hover:opacity-10"
-                    animate={{ opacity: [0, 0.1, 0], scaleY: [1, 1.1, 1] }}
-                    transition={{ duration: 0.2, repeat: Infinity, repeatDelay: 3 }}
-                  />
-                  <motion.div
-                    className="absolute left-0 w-full h-px bg-current opacity-0 group-hover:opacity-60"
-                    animate={{ y: [0, 64, 0], opacity: [0, 0.6, 0] }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  />
-                </motion.button>
+        {/* Basic mobile menu overlay */}
+        {mobileMenuOpen && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0,0,0,0.95)',
+            zIndex: 10000,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <button
+              aria-label="Close navigation menu"
+              style={{ position: 'absolute', top: 20, right: 20, background: 'none', border: 'none', color: '#00ffff', fontSize: 32 }}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              &times;
+            </button>
+            <nav style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+              {[
+                { icon: Calendar, label: 'EVENTS', color: '#00ffff' },
+                { icon: Users, label: 'SPEAKERS', color: '#00ff41' },
+                { icon: Info, label: 'ABOUT', color: '#8b5cf6' },
+                { icon: Phone, label: 'CONTACT', color: '#fbbf24' },
+                { icon: Zap, label: 'SPONSORS', color: '#f472b6' },
+                { icon: Monitor, label: 'REGISTER', color: '#ff0040' },
+              ].map((item) => (
+                <button
+                  key={item.label}
+                  style={{
+                    background: 'none',
+                    border: '2px solid ' + item.color,
+                    color: item.color,
+                    fontFamily: 'monospace',
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    padding: '16px 32px',
+                    borderRadius: 8,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 12,
+                  }}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <item.icon size={24} />
+                  {item.label}
+                </button>
               ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </nav>
+          </div>
+        )}
 
 
         {/* Bottom Bar */}
